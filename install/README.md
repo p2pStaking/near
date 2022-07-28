@@ -1,5 +1,3 @@
-# !!Draft!! écriture en cours
-
 # Présentation
 
 Dans le cadre du programme 'Stake Wars: Episode', cette documentation indique comment configurer un validateur Near sur le réseau `shardnet`. 
@@ -17,7 +15,7 @@ Ce guide d'installation concerne des serveurs linux, il a été testé sur `debi
 
 Un tel serveur dédié se loue pour moins de $80 chez OVH et sans doute moins de $60 chez Ikoula ou Hetzner. 
 
-Bien qu'en dehors du périmètre de cette documentation, soyez miticuleux sur la sécurité de votre serveur. Notamment, veillez à:
+Bien qu'en dehors du périmètre de cette documentation, soyez miticuleux sur la sécurité de votre serveur. Notamment, veiller à:
 - utiliser une authentification par clé SSH (et interdire les connexions SSH par mot de passe)
 - renforcer la sécurité de votre serveur (https://www.informaticar.net/security-hardening-ubuntu-20-04/)
 
@@ -36,7 +34,7 @@ sudo apt install build-essential nodejs
 PATH="$PATH"
 ```
 
-Assurons nous que `nodejs` et `npm` sont installés correctement
+S'assurer que `nodejs` et `npm` sont installés correctement
 
 ```
 node -v
@@ -44,9 +42,9 @@ npm -v
 ```
 
 Les versions suivantes doivent s'afficher: `v18.x.x` et `8.x.x`. 
-Si ce n'est pas le cas, veuillez corriger le problème (pour ceci, google est votre ami)
+Si ce n'est pas le cas, corriger le problème (pour ceci, google est votre ami)
 
-Installons NEAR-CLI et définissons `shardnet` comme environnement par défaut
+Installer NEAR-CLI et définir `shardnet` comme environnement par défaut
 ```
 sudo npm install -g near-cli
 export NEAR_ENV=shardnet
@@ -62,14 +60,14 @@ lscpu | grep -P '(?=.*avx )(?=.*sse4.2 )(?=.*cx16 )(?=.*popcnt )' > /dev/null \
   || echo "Not supported"
 ```
 
-Installation et configurations des outils de développement
+Installation et configuration des outils de développement
 
 ```
 sudo apt install -y git binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake gcc g++ python docker.io protobuf-compiler libssl-dev pkg-config clang llvm cargo
-sudo apt install python3-pip
+sudo apt install -y python3-pip
 USER_BASE_BIN=$(python3 -m site --user-base)/bin
 export PATH="$USER_BASE_BIN:$PATH"
-sudo apt install clang build-essential make
+sudo apt install -y clang build-essential make
 ```
 
 Pour l'installation de `cargo`
@@ -98,7 +96,7 @@ Compiler les sources (ça peut prendre un peu de temps)
 cargo build -p neard --release --features shardnet
 ```
 
-Préparer l'environnement (qui sera congiuré dans `~/.near`)
+Préparer l'environnement (crée le répertoire `~/.near`)
 ```
 ./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
 rm ~/.near/config.json
@@ -162,7 +160,7 @@ near login
 
 ![output](https://github.com/near/stakewars-iii/blob/main/challenges/images/1.png)
 
-Copier l'URL dans le nnaviguer connecté à votre compte. Puis authoriser l'access. 
+Copier l'URL dans le navigateur connecté à votre compte. Puis authoriser l'access. 
 
 Le navigateur va afficher une page d'erreur mais NEAR-CLI doit afficher `Logged in as ********* successfully`
 ![output](https://github.com/near/stakewars-iii/raw/main/challenges/images/5.png)
@@ -225,7 +223,7 @@ Afin d'intégrer les validateurs actifs, il faut
 - que le noeud soit synchronisé
 - avoir atteint le seat price (en délégations)
 - avoir soumis une proposition via un ping
-- produire plus de 90% des bllocks assignés une fois actif
+- produire plus de 90% des blocks assignés une fois actif
 
 ### Monitoring
 
@@ -251,7 +249,7 @@ Commandes les plus importantes
 
 Les mêmes étapes s'appliquent pour deployer des validateurs sur les autres réseaux Near. 
 
-Veillez simplement à ajuster les différents paramètre.  
+Veillez simplement à ajuster les différents paramètres.  
 
 Remplacer `shardnet` pour le network approprié (`mainnet` ou `testnet`) dans les différentes étapes. Notamment pour la variable d'environnement `NEAR_ENV`, le paramètre `--chain-id`, et les téléchargements éventuels (genesis, sbapshot, etc)
 
