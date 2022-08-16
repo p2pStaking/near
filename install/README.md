@@ -30,7 +30,7 @@ NEAR-CLI est une interface en ligne de commande qui permet d'interagir avec la b
 ```
 sudo apt update && sudo apt upgrade -y
 curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -  
-sudo apt install build-essential nodejs
+sudo apt install -y build-essential nodejs
 PATH="$PATH"
 ```
 
@@ -91,23 +91,22 @@ Checkout le commit actuel. Disponible [ici](https://github.com/near/stakewars-ii
 https://github.com/near/stakewars-iii/blob/main/commit.md
 ```
 
+```
+git checkout <version>
+```
+
 Compiler les sources (ça peut prendre un peu de temps)
 ```
 cargo build -p neard --release --features shardnet
 ```
 
-Préparer l'environnement (crée le répertoire `~/.near`)
+Préparer l'environnement (crée le répertoire `~/.near`) et télécharger la dernière snapshot
 ```
 ./target/release/neard --home ~/.near init --chain-id shardnet --download-genesis
 rm ~/.near/config.json
 wget -O ~/.near/config.json https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/config.json
 ```
 
-Télécharger de la dernière snapshot (il faudra télécharger une archive sur les autres réseaux, ici en remplace le genesis)
-```
-cd ~/.near
-wget https://s3-us-west-1.amazonaws.com/build.nearprotocol.com/nearcore-deploy/shardnet/genesis.json
-```
 
 Installer le service neard 
 
