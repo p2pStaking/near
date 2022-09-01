@@ -29,7 +29,9 @@ NEAR-CLI est une interface en ligne de commande qui permet d'interagir avec la b
 
 ```
 sudo apt update && sudo apt upgrade -y
+sudo apt remove  -y nodejs
 curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -  
+sudo apt install -y nodejs
 sudo apt install -y build-essential nodejs
 PATH="$PATH"
 ```
