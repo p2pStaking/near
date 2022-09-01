@@ -74,7 +74,8 @@ sudo apt install -y clang build-essential make
 
 Pour l'installation de `cargo`
 ```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+sudo apt remove -y rustc
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 ```
 
  valider l'option 1 par défault avec la touche `Entrer`
