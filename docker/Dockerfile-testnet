@@ -1,0 +1,33 @@
+FROM rust:bullseye as build 
+SHELL ["/bin/bash", "-c"]
+RUN apt update && \
+	apt install -y wget  curl apt-utils && \
+	apt upgrade -y && \
+	apt install -y git  && \
+	apt install -y binutils-dev libcurl4-openssl-dev zlib1g-dev libdw-dev libiberty-dev cmake gcc g++ python  protobuf-compiler libssl-dev pkg-config clang llvm  && \
+	apt install -y python3-pip && \
+	USER_BASE_BIN=$(python3 -m site --user-base)/bin && \
+	export PATH="$USER_BASE_BIN:$PATH" && \
+	cd && \
+	wget https://github.com/near/nearcore/archive/refs/tags/1.29.0-rc.1.tar.gz && \
+	tar -xvzf 1.29.0-rc.1.tar.gz && \
+	cd nearcore-1.29.0-rc.1/ && \
+        cargo build -p neard --release --features shardnet && \
+        cp target/release/neard /usr/local/bin/neard  
+FROM debian:bullseye
+RUN apt update && \
+	apt upgrade -y && \
+	apt remove -y nodejs && \
+	apt install -y  jq \
+			curl \
+			wget \
+			awscli && \
+	curl -sL https://deb.nodesource.com/setup_18.x |  bash - && \
+	apt install -y nodejs && \
+        npm install -g near-cli && \
+	npm install -g npm@8.19.1 && \
+        export NEAR_ENV=testnet && echo 'export NEAR_ENV=testnet' >> ~/.bashrc 
+COPY --from=build /usr/local/bin/neard /usr/local/bin/neard
+COPY ./run_near-testnet.sh /root/run_near.sh
+EXPOSE 3030 24567
+CMD $HOME/run_near.sh
