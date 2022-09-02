@@ -2,7 +2,7 @@ version: "2.0"
 
 services:
   near:
-    image: p2pstaking/near-node:testnet-latest
+    image: p2pstaking/near-node:testnet_chunk_only-latest
     expose:
       - port: 24567
         as: 24567
