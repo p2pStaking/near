@@ -41,7 +41,7 @@ AKT are Akash tokens used to pay fees on the network. Any deployment requires to
 
 ` create a certificat `
 
-Go to deployment and use `https://github.com/p2pStaking/near/blob/main/docker/run_near-testnet.sh`
+`Go to deployment copy and paste this content`[https://github.com/p2pStaking/near/blob/main/docker/deploy-akash-testnet_chunk_only.yml](https://github.com/p2pStaking/near/blob/main/docker/deploy-akash-testnet_chunk_only.yml)
 
 
 `Deploy`
