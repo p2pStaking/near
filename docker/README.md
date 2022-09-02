@@ -26,7 +26,7 @@ Then you can run it with
 docker run -d near-node:testnet-last_chunk_only
 ```
 
-# Deploy on Akash
+# Deploy Near node on Akash
 
 Let's keep things simple here, we will use Cloudmos client and p2pstaking/near-node docker image. (advanced users should prefer to build their image, to deploy it to their own repository, and use Akash command line client) 
 
