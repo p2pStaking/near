@@ -52,7 +52,8 @@ Wait for the transaction confirmation and the deployment
 ![image](https://user-images.githubusercontent.com/110183218/188602828-7440c053-32a0-4220-b1f2-5b344c0d2bdd.png)
 
 TODO : goto lease find ssh param
-
+screen 
+curl -sL https://raw.githubusercontent.com/p2pStaking/near/main/stake-wars/challenge17/install_near_testnet_chunk_only.sh  | bash - 
 
 
 Optionally : check out this projet and
