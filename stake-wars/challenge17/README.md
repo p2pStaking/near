@@ -99,6 +99,14 @@ Your can detach `Ctrl a d` and attach `screen -r` later.
 
 Once synced you can following this guide to start a validator. 
 
+## Configure validator (testnet)
+
+Follow official near docs, but **skip node creation steps handled by our script** (binaries install, service configuration, node and database init)
+
+- [create an wallet](https://near-nodes.io/validator/validator-bootcamp#step-2--create-a-wallet) 
+- [authorize login](https://near-nodes.io/validator/validator-bootcamp#step-3--authorize-wallet-locally) from your container 
+- [create validator key](https://near-nodes.io/validator/validator-bootcamp#create-validator_keyjson)
+- [become a validator](https://near-nodes.io/validator/validator-bootcamp#becoming-a-validator)
 
 ### Optionally clone and build this projet 
 
