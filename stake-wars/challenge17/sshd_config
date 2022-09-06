@@ -1,0 +1,10 @@
+Include /etc/ssh/sshd_config.d/*.conf
+ChallengeResponseAuthentication no
+AllowTcpForwarding yes
+UsePAM yes
+X11Forwarding no
+PermitRootLogin yes
+AuthorizedKeysFile .ssh/authorized_keys
+Port 22
+PasswordAuthentication No
+PermitEmptyPasswords No

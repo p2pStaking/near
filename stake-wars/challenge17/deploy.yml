@@ -2,10 +2,13 @@ version: "2.0"
 
 services:
   near:
-    image: p2pstaking/near-node:testnet_chunk_only-latest
+    image: p2pstaking/akash:ubuntu-focal-ssh-systemd-beta0.1
+    env:
+      - MY_IDENTITY=ssh-ed25519 xxx.....
+      - LOG_CMD=touch /root/.near/neard.err && tail -f /root/.near/neard.err
     expose:
-      - port: 24567
-        as: 24567
+      - port: 22
+        as: 22
         to:
           - global: true
       - port: 3030
@@ -22,9 +25,12 @@ profiles:
         memory:
           size: 16Gi
         storage:
-          size: 80Gi
+          - name: data
+            size: 800Gi
+#            attributes:
+#              class: beta3
   placement:
-    westcoast:
+    datacenter:
       attributes:
         host: akash
       pricing:
@@ -34,6 +40,6 @@ profiles:
 
 deployment:
   near:
-    westcoast:
+    datacenter:
       profile: near
       count: 1
