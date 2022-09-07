@@ -1,4 +1,4 @@
---> Doc in progress
+Installation video in French: https://www.youtube.com/watch?v=6RWrySMS__s&t=231s
 
 # Run a testnet validator chunk only on Akash network
 
@@ -22,9 +22,12 @@ From there, you will able to deploy most services...
 See [official docs](https://docs.akash.network/guides/deploy)
 
 ### Create a wallet 
-(TODO screenshot)
+- Choose `ÀDD ACCOUNT` add backp your mnemonic
 
-Add funds (TODO screenshot)
+Add funds 
+- Copy your wallet address and funds to it
+- Once arrived, clic `CREATE CERTIFICATE`on the right of the app
+- Click `APPROVE`
 
 ### Deploy using Cloudmos
 - click `DEPLOY`
