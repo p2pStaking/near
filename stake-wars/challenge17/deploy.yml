@@ -5,7 +5,7 @@ services:
     image: p2pstaking/akash:ubuntu-focal-ssh-systemd-beta0.1
     env:
       - MY_IDENTITY=ssh-ed25519 xxx.....
-      - LOG_CMD=touch /root/.near/neard.err && tail -f /root/.near/neard.err
+      - LOG_CMD=mkdir -p /root/.near/ && echo "p2pstaking/akash:ubuntu-focal-ssh-systemd-beta0.1 started" >> /root/.near/neard.err && tail -f /root/.near/neard.err
     expose:
       - port: 22
         as: 22
