@@ -101,12 +101,44 @@ Once synced you can following this guide to start a validator.
 
 ## Configure validator (testnet)
 
-Follow official near docs, but **skip node creation steps handled by our script** (binaries install, service configuration, node and database init)
+The following steps will create validator key and the staking pool.
 
-- [create an wallet](https://near-nodes.io/validator/validator-bootcamp#step-2--create-a-wallet) 
-- [authorize login](https://near-nodes.io/validator/validator-bootcamp#step-3--authorize-wallet-locally) from your container 
-- [create validator key](https://near-nodes.io/validator/validator-bootcamp#create-validator_keyjson)
-- [become a validator](https://near-nodes.io/validator/validator-bootcamp#becoming-a-validator)
+- Create an [wallet](https://wallet.testnet.near.org/) 
+- Authorize login
+```
+near login
+```
+- Create validator key
+```
+OWNER_ID=<YOUR_WALLET>
+POOL_NAME=<YOUR_POOL_NAME>
+POOL_ID=$POOL_NAME.pool.f863973.m0
+near generate-key $POOL_ID
+cp .near-credentials/testnet/$POOL_ID.json ~/.near/validator_key.json
+sed -i "s/private_key/secret_key/" ~/.near/validator_key.json 
+```
+** backup your validator key `~/.near/validator_key.json` ** 
+- Create your staking pool
+```
+PUBLIC_KEY=<copy value from validator_key.json>
+```
+```
+near call pool.f863973.m0  create_staking_pool "{\"staking_pool_id\": \"$POOL_NAME\", \"owner_id\": \"$OWNER_ID\", \"stake_public_key\": \"$PUBLIC_KEY\", \"reward_fee_fraction\": {\"numerator\": 5, \"denominator\": 100}, \"code_hash\":\"DD428g9eqLL8fWUxv8QSpVFzyHi1Qd16P8ephYCTmMSZ\"}" --accountId="$OWNER_ID" --amount=30 --gas=300000000000000
+```
+when succeed you will see `true` in the output.
+
+Basic interactions with your contract
+
+Stake some NEARs
+```
+near call $POOL_ID deposit_and_stake --amount 111 --accountId $OWNER_ID --gas=300000000000000
+```
+
+Ping your pool
+
+```
+near call $POOL_ID ping '{}' --accountId $OWNER_ID --gas=300000000000000
+```
 
 ### Optionally clone and build this projet 
 
