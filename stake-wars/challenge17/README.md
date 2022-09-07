@@ -92,7 +92,7 @@ screen
 ```
 
 ```
-curl -sL https://raw.githubusercontent.com/p2pStaking/near/main/stake-wars/challenge17/install_near_testnet_chunk_only.sh  | bash - 
+curl -sL https://raw.githubusercontent.com/p2pStaking/near/main/stake-wars/challenge17/install_near_testnet_chunk_only.sh  | bash - | tee -a /root/.near/neard.err
 ```
 
 Your can detach `Ctrl a d` and attach `screen -r` later. 
