@@ -13,7 +13,7 @@ export PATH="$USER_BASE_BIN:$PATH"
 cd 
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh  -s -- -y
 source "$HOME/.cargo/env"
-wget https://github.com/near/nearcore/archive/refs/tags/1.29.0-rc.1.tar.gz 
+wget https://github.com/near/nearcore/archive/refs/tags/1.29.0-rc.2.tar.gz 
 tar -xvzf 1.29.0-rc.1.tar.gz 
 cd nearcore-1.29.0-rc.1/ 
 cargo build -p neard --release --features shardnet 
