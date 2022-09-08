@@ -2,10 +2,14 @@ version: "2.0"
 
 services:
   near:
-    image: p2pstaking/akash:ubuntu-focal-ssh-systemd-beta0.1
+    image: p2pstaking/akash:ubuntu-focal-ssh-systemd-beta0.2
+    params:
+      storage:
+        data:
+          mount: /root/.near/
     env:
       - MY_IDENTITY=ssh-ed25519 xxx.....
-      - LOG_CMD=mkdir -p /root/.near/ && echo "p2pstaking/akash:ubuntu-focal-ssh-systemd-beta0.1 started" >> /root/.near/neard.err && tail -f /root/.near/neard.err
+      - LOG_FILE=/root/.near/neard.err
     expose:
       - port: 22
         as: 22
@@ -26,9 +30,9 @@ profiles:
           size: 16Gi
         storage:
           - name: data
-            size: 800Gi
-#            attributes:
-#              class: beta3
+            size: 600Gi
+            attributes:
+              persistant: yes
   placement:
     datacenter:
       attributes:
