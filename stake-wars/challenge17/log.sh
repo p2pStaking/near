@@ -8,7 +8,8 @@
 
 
 # log service to akash log
-while [[ "1" -eq "1" ]]
-do
-bash -c "${LOG_CMD}"
-done
+mkdir -p $( dirname $LOG_FILE )
+touch ${LOG_FILE}
+tail -f ${LOG_FILE}
+echo "lost connection to log file" >>  ${LOG_FILE}"
+sleep infinity
