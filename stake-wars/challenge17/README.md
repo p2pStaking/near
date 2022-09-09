@@ -117,13 +117,13 @@ OWNER_ID=<YOUR_WALLET>
 POOL_NAME=<YOUR_POOL_NAME>
 POOL_ID=$POOL_NAME.pool.f863973.m0
 near generate-key $POOL_ID
-cp .near-credentials/testnet/$POOL_ID.json ~/.near/validator_key.json
+cp ~/.near-credentials/testnet/$POOL_ID.json ~/.near/validator_key.json
 sed -i "s/private_key/secret_key/" ~/.near/validator_key.json 
 ```
 ** backup your validator key `~/.near/validator_key.json` ** 
 - Create your staking pool
 ```
-PUBLIC_KEY=<copy value from validator_key.json>
+PUBLIC_KEY=$(jq -r .public_key ~/.near/validator_key.json)
 ```
 ```
 near call pool.f863973.m0  create_staking_pool "{\"staking_pool_id\": \"$POOL_NAME\", \"owner_id\": \"$OWNER_ID\", \"stake_public_key\": \"$PUBLIC_KEY\", \"reward_fee_fraction\": {\"numerator\": 5, \"denominator\": 100}, \"code_hash\":\"DD428g9eqLL8fWUxv8QSpVFzyHi1Qd16P8ephYCTmMSZ\"}" --accountId="$OWNER_ID" --amount=30 --gas=300000000000000
