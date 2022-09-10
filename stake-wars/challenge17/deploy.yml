@@ -19,6 +19,10 @@ services:
         as: 3030
         to:
           - global: true
+      - port: 24567
+        as: 24567
+        to:
+          - global: true
 
 profiles:
   compute:
