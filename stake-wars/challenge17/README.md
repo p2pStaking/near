@@ -114,7 +114,11 @@ near login
 - Create validator key
 ```
 OWNER_ID=<YOUR_WALLET>
+```
+```
 POOL_NAME=<YOUR_POOL_NAME>
+```
+``` 
 POOL_ID=$POOL_NAME.pool.f863973.m0
 near generate-key $POOL_ID
 cp ~/.near-credentials/testnet/$POOL_ID.json ~/.near/validator_key.json
