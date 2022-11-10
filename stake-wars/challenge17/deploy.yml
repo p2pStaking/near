@@ -3,10 +3,10 @@ version: "2.0"
 services:
   near:
     image: p2pstaking/akash:ubuntu-focal-ssh-systemd-beta0.2
-#    params:
-#      storage:
-#        data:
-#          mount: /root/.near/
+    params:
+      storage:
+        data:
+          mount: /root/.near/
     env:
       - MY_IDENTITY=ssh-ed25519 xxx.....
       - LOG_FILE=/root/.near/neard.err
@@ -35,8 +35,9 @@ profiles:
         storage:
           - name: data
             size: 600Gi
-#            attributes:
-#              persistent: yes
+            attributes:
+              persistent: true
+              class: beta3
   placement:
     datacenter:
       attributes:
