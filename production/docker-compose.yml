@@ -1,0 +1,23 @@
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - /srv/tls/server.crt:/etc/nginx/tls/nginx.crt
+      - /srv/tls/server.key:/etc/nginx/tls/nginx.key
+      - /srv/tools/service/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /srv/tools/service/nginx/reverse-proxy-https.conf:/etc/nginx/templates/reverse-proxy-https.conf.template 
+    ports:
+      - "443:443"
+    environment:
+      - SERVICE_TARGET=http://neard:3030/
+  neard:
+    image: p2pstaking/neard
+    ports: 
+      - "3030:3030"
+      - "24567:24567"
+    volumes:
+      - /root/.near/:/root/.near/
+      - /root/.near-credentials:/root/.near-credentials 
+      - /root/.near-config:/root/.near-config
+    environment:
+      - NEAR_ENV=mainnet

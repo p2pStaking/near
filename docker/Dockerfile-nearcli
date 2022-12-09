@@ -1,0 +1,8 @@
+FROM  node:16.18.1-bullseye 
+RUN apt-get update && \
+	apt-get upgrade && \
+	apt-get install -y curl && \
+	cd ~ && \
+	PATH="$PATH" && \
+	npm install -g near-cli 
+CMD ["sh", "-c", "$@"]
