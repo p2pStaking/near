@@ -15,6 +15,19 @@ docker run p2pstaking/near-cli:latest near proposals
 
 ## Neard
 
+### build 
+
+```
+NEAR_RELEASE_VERSION=1.30.0 #version to build
+```
+
+```
+docker build . -t p2pstaking/neard:$NEAR_RELEASE_VERSION
+docker push p2pstaking/neard:$NEAR_RELEASE_VERSION
+```
+
+### run
+
 ```
 docker run p2pstaking/neard:latest \
   -v ~/.near/:/root/.near/ \
