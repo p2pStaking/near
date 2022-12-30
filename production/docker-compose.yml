@@ -1,6 +1,7 @@
 services:
   nginx:
     image: nginx
+    restart: unless-stopped
     volumes:
       - /srv/tls/server.crt:/etc/nginx/tls/nginx.crt
       - /srv/tls/server.key:/etc/nginx/tls/nginx.key
@@ -11,7 +12,8 @@ services:
     environment:
       - SERVICE_TARGET=http://neard:3030/
   neard:
-    image: p2pstaking/neard
+    image: p2pstaking/neard:latest
+    restart: unless-stopped
     ports: 
       - "3030:3030"
       - "24567:24567"
@@ -21,3 +23,4 @@ services:
       - /root/.near-config:/root/.near-config
     environment:
       - NEAR_ENV=mainnet
+      - POOL_ID=p2pstaking

@@ -7,8 +7,8 @@ RUN cd && \
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
 	. $HOME/.cargo/env && \
 	git clone https://github.com/near/nearcore.git && \
-	export NEAR_RELEASE_VERSION=1.29.3 && \
 	cd nearcore && \
+	export NEAR_RELEASE_VERSION="1.30.0" && \
 	git checkout $NEAR_RELEASE_VERSION && \
 	make release && \
 	mkdir -p ~/.near && \
