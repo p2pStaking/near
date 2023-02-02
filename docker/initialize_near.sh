@@ -1,7 +1,6 @@
 #!/bin/bash 
 
 if [ ! -f "/.near/genesis.json" ] ; then 
-	read -p 'POOL_ID  (ex: xx for the following staking pool id $POOL_ID.poolv1.near)' POOL_ID
 	STAKING_POOL_ID=${POOL_ID}.poolv1.near
 	mkdir ~/.near
 	cd ~/.near

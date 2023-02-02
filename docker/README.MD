@@ -22,7 +22,7 @@ NEAR_RELEASE_VERSION=1.30.0 #version to build
 ```
 
 ```
-docker build . -t p2pstaking/neard:$NEAR_RELEASE_VERSION
+docker build  . -t p2pstaking/neard:$NEAR_RELEASE_VERSION  --build-arg NEAR_RELEASE_VERSION="$NEAR_RELEASE_VERSION"
 docker push p2pstaking/neard:$NEAR_RELEASE_VERSION
 ```
 
