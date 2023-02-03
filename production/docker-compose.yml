@@ -8,16 +8,11 @@ services:
       - /srv/tls/server.key:/etc/nginx/tls/nginx.key
       - /srv/tools/service/nginx/nginx.conf:/etc/nginx/nginx.conf
       - /srv/tools/service/nginx/reverse-proxy-https.conf:/etc/nginx/templates/reverse-proxy-https.conf.template 
-    ports:
-      - "443:443"
     environment:
       - SERVICE_TARGET=http://127.0.0.1:3030/
   neard:
-    image: p2pstaking/neard:latest
+    image: p2pstaking/neard:1.30.1
     restart: unless-stopped
-    ports: 
-      - "3030:3030"
-      - "24567:24567"
     network_mode: host
     volumes:
       - /root/.near/:/root/.near/

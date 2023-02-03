@@ -18,7 +18,7 @@ docker run p2pstaking/near-cli:latest near proposals
 ### build 
 
 ```
-NEAR_RELEASE_VERSION=1.30.0 #version to build
+NEAR_RELEASE_VERSION=<x.x.x>
 ```
 
 ```
@@ -29,10 +29,11 @@ docker push p2pstaking/neard:$NEAR_RELEASE_VERSION
 ### run
 
 ```
-docker run p2pstaking/neard:latest \
+docker \
   -v ~/.near/:/root/.near/ \
   -v ~/.near-credentials:/root/.near-credentials \ 
   -v ~/.near-config:/root/.near-config \
   -e NEAR_ENV=<mainnet,testnet> \
-  -e POOL_ID=<your pool id> 
+  -e POOL_ID=<your pool id> \
+	p2pstaking/neard:latest
 ```
