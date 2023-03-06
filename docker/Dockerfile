@@ -1,4 +1,4 @@
-FROM p2pstaking/near-cli  
+FROM p2pstaking/near-cli AS build 
 ARG NEAR_RELEASE_VERSION
 RUN cd && \
 	echo "building neard version $NEAR_RELEASE_VERSION" && sleep 3s  && \
@@ -11,8 +11,11 @@ RUN cd && \
 	git clone https://github.com/near/nearcore.git && \
 	cd nearcore && \
 	git checkout $NEAR_RELEASE_VERSION && \
-	make release && \
-	mkdir -p ~/.near && \
+	make release  
+FROM node:16.18.1-bullseye 
+COPY --from=build /root/nearcore/target/release/neard /usr/local/bin/
+COPY --from=build /usr/local/bin/near /usr/local/bin/
+RUN	mkdir -p ~/.near && \
 	cd ~/.near 
 EXPOSE  3030 24567
 COPY initialize_near.sh /root/

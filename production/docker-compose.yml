@@ -11,7 +11,7 @@ services:
     environment:
       - SERVICE_TARGET=http://127.0.0.1:3030/
   neard:
-    image: p2pstaking/neard:1.31.0
+    image: p2pstaking/neard:1.31.1
     restart: unless-stopped
     network_mode: host
     volumes:
