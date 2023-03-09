@@ -12,10 +12,12 @@ RUN cd && \
 	cd nearcore && \
 	git checkout $NEAR_RELEASE_VERSION && \
 	make release  
-FROM node:16.18.1-bullseye 
+FROM p2pstaking/near-cli 
 COPY --from=build /root/nearcore/target/release/neard /usr/local/bin/
-COPY --from=build /usr/local/bin/near /usr/local/bin/
-RUN	mkdir -p ~/.near && \
+RUN	apt-get update && \
+        apt-get upgrade -y && \
+        apt-get install -y jq && \
+	mkdir -p ~/.near && \
 	cd ~/.near 
 EXPOSE  3030 24567
 COPY initialize_near.sh /root/
