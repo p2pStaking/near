@@ -11,7 +11,7 @@ services:
     environment:
       - SERVICE_TARGET=http://127.0.0.1:3030/
   neard:
-    image: p2pstaking/neard:1.31.1
+    image: p2pstaking/neard:1.32.1
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -19,6 +19,7 @@ services:
       - /root/.near-credentials:/root/.near-credentials 
       - /root/.near-config:/root/.near-config
       - ../prometheus/push_near.sh:/root/push_near.sh
+      - ../bin/staking_contract:/usr/local/bin/staking_contract
     environment:
       - NEAR_ENV=mainnet
       - POOL_ID=p2pstaking

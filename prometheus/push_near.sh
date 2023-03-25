@@ -61,6 +61,9 @@ near_blocks_produced=$(jq .num_produced_blocks $tmp_status_validator)
 near_blocks_expected=$(jq .num_expected_blocks $tmp_status_validator)
 near_chunks_produced=$(jq .num_produced_chunks $tmp_status_validator)
 near_chunks_expected=$(jq .num_expected_chunks $tmp_status_validator)
+near_validator_account_total_balance=$(near view $VALIDATOR_NAME get_total_staked_balance "{}" | grep -v 'View call'  | sed "s/'//g")
+near_validator_stake_total_balance=$(near view $VALIDATOR_NAME get_account_total_balance "{\"account_id\": \"${POOL_ID}.near\"}" | grep -v 'View call'  | sed "s/'//g")
+near_validator_stake_delegators_count=$(/usr/local/bin/staking_contract/getAccounts.sh| grep account_id | wc -l)
 
 URL=$PUSHGATEWAY_URL/metrics/job/near/instance/$VALIDATOR_NAME
 
@@ -81,6 +84,12 @@ near_validator_next $near_validator_next
 near_chunks_produced ${near_chunks_produced:-0}
 # TYPE near_chunks_expected gauge
 near_chunks_expected ${near_chunks_expected:-0}
+# TYPE near_validator_account_total_balance gauge
+near_validator_account_total_balance{name="$VALIDATOR_NAME"} ${near_validator_account_total_balance:-0}
+# TYPE near_validator_stake_total_balance gauge
+near_validator_stake_total_balance{name="$VALIDATOR_NAME"} ${near_validator_stake_total_balance:-0}
+# TYPE near_validator_stake_delegators_count gauge
+near_validator_stake_delegators_count{name="$VALIDATOR_NAME"} ${near_validator_stake_delegators_count:-0}
 EOF
 
 if [[ $debug -eq 1 ]] 
