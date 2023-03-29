@@ -1,15 +1,14 @@
 services:
-  nginx:
-    image: nginx
+  nginx-https-reverse-proxy:
+    image: p2pstaking/nginx-https-reverse-proxy
     restart: unless-stopped
     network_mode: host
     volumes:
-      - /srv/tls/server.crt:/etc/nginx/tls/nginx.crt
-      - /srv/tls/server.key:/etc/nginx/tls/nginx.key
-      - /srv/tools/service/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - /srv/tools/service/nginx/reverse-proxy-https.conf:/etc/nginx/templates/reverse-proxy-https.conf.template 
+      - /srv/tls/:/etc/nginx/tls/
     environment:
-      - SERVICE_TARGET=http://127.0.0.1:3030/
+      - NGINX_SERVICE_TARGET=http://127.0.0.1:3030/
+      - NGINX_LISTEN_PORT=443
+      - NGINX_SERVER_NAME=near-mainnet.p2pstaking.org
   neard:
     image: p2pstaking/neard:1.32.1
     restart: unless-stopped
