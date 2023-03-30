@@ -9,6 +9,8 @@ services:
       - NGINX_SERVICE_TARGET=http://127.0.0.1:3030/
       - NGINX_LISTEN_PORT=443
       - NGINX_SERVER_NAME=near-mainnet.p2pstaking.org
+    security_opt:
+      - apparmor=unconfined 
   neard:
     image: p2pstaking/neard:1.32.1
     restart: unless-stopped
@@ -23,3 +25,5 @@ services:
       - NEAR_ENV=mainnet
       - POOL_ID=p2pstaking
       - VALIDATOR_NAME=p2pstaking.poolv1.near
+    security_opt:
+      - apparmor=unconfined 
