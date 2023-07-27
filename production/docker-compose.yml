@@ -12,7 +12,7 @@ services:
     security_opt:
       - apparmor=unconfined 
   neard:
-    image: p2pstaking/neard:1.33.0
+    image: p2pstaking/neard:1.35.0
     restart: unless-stopped
     network_mode: host
     volumes:
