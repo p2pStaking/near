@@ -105,3 +105,7 @@ fi
 
 cat $tmp_metrics  |  curl --insecure -s --data-binary @-  $URL
 
+# TODO : remove once migration done (backward compatibility push to host pgw instance)
+curl   localhost:9091 2>&1 | grep -q 'Connection refused' || \
+cat $tmp_metrics  |  curl --insecure -s --data-binary @-  https://127.0.0.1:9091/metrics/job/near/instance/$VALIDATOR_NAME
+
