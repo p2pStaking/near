@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-if [ ! -f "/.near/genesis.json" ] ; then 
+if [ ! -f  ~/.near/genesis.json ] ; then 
 	STAKING_POOL_ID=${POOL_ID}.poolv1.near
 	mkdir ~/.near
 	cd ~/.near
