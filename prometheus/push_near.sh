@@ -6,8 +6,9 @@
 [[ -z "$VALIDATOR_NAME" ]] && echo "you must set VALIDATOR_NAME " && exit 0
 [[ -z "$NEAR_ENV" ]] && echo "you must set NEAR_ENV " && exit 0
 
-PUSHGATEWAY_URL=${PUSHGATEWAY_URL:-"https://127.0.0.1:9091"}
+PUSHGATEWAY_URL=${PUSHGATEWAY_URL:-"http://localhost:9091"}
 NEAR_METRIC_PORT=${NEAR_METRIC_PORT:-"3030"}
+
 
 while :; do
     case $1 in

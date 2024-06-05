@@ -2,6 +2,11 @@
 
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
+docker pull p2pstaking/neard:latest
+
+apt update
+apt upgrade -y 
+
 
 docker compose down 
 docker compose up -d

@@ -1,4 +1,16 @@
-FROM p2pstaking/near-cli AS build 
+ARG NEAR_RELEASE_VERSION=1.39.2
+
+FROM  node:16.18.1-bullseye as near-cli
+RUN apt-get update && \
+        apt-get upgrade -y && \
+        apt-get install -y curl && \
+        cd ~ && \
+        PATH="$PATH" && \
+        npm install -g near-cli
+CMD ["sh", "-c", "$@"]
+
+
+FROM near-cli AS build 
 ARG NEAR_RELEASE_VERSION
 RUN cd && \
 	echo "building neard version $NEAR_RELEASE_VERSION" && sleep 3s  && \
@@ -12,7 +24,8 @@ RUN cd && \
 	cd nearcore && \
 	git checkout $NEAR_RELEASE_VERSION && \
 	make release  
-FROM p2pstaking/near-cli 
+
+FROM p2pstaking/near-cli as final
 COPY --from=build /root/nearcore/target/release/neard /usr/local/bin/
 RUN	apt-get update && \
         apt-get upgrade -y && \
