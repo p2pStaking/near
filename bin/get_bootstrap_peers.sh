@@ -17,5 +17,4 @@ $list1[] as $active_peer | $list2[] |
 select(.peer_id == $active_peer.id) |
 "\(.peer_id)@\($active_peer.addr)"' |\
 awk 'NR>2 {print ","} length($0) {print p} {p=$0}' ORS="" | sed 's/"//g'
-echo 
 
