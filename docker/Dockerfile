@@ -1,6 +1,6 @@
-ARG NEAR_RELEASE_VERSION=1.39.2
+ARG NEAR_RELEASE_VERSION=1.40.0
 
-FROM  node:16.18.1-bullseye as near-cli
+FROM  node:22.5-bullseye as near-cli
 RUN apt-get update && \
         apt-get upgrade -y && \
         apt-get install -y curl && \
