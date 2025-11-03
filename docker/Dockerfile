@@ -23,6 +23,7 @@ RUN cd && \
 	git clone https://github.com/near/nearcore.git && \
 	cd nearcore && \
 	git checkout $NEAR_RELEASE_VERSION && \
+ 	rustup toolchain install 1.84.0-x86_64-unknown-linux-gnu && \
 	make release  
 
 FROM p2pstaking/near-cli as final
