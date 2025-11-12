@@ -1,6 +1,6 @@
 services:
   neard:
-    image: p2pstaking/neard:2.8.0
+    image: p2pstaking/neard:2.9.1
     restart: unless-stopped
     volumes:
       - /root/.near/:/root/.near/
@@ -8,9 +8,10 @@ services:
       - /root/.near-config:/root/.near-config
       - ../prometheus/push_near.sh:/root/push_near.sh
       - ../bin/staking_contract:/usr/local/bin/staking_contract
-    ports:
-      - 9030:3030
-      - 24567:24567
+    network_mode: host
+#    ports:
+#      - 9030:3030
+#      - 24567:24567
     environment:
       - NEAR_ENV=mainnet
       - POOL_ID=p2pstaking

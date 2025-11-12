@@ -58,6 +58,7 @@ node=$(grep "$VALIDATOR_NAME" $tmp_status )
 
 near_stake=$(echo $node  |  sed -r 's/.* ([0-9]+),([0-9]+).*/\1\2/g')
 near_uptime=$(echo $node  | sed -r 's/.* ([0-9]+\.?[0-9]{0,})\%.*/\1/g' )
+echo "$near_uptime" | grep -q "NaN" && near_uptime=100
 near_blocks_produced=$(jq .num_produced_blocks $tmp_status_validator)
 near_blocks_expected=$(jq .num_expected_blocks $tmp_status_validator)
 near_chunks_produced=$(jq .num_produced_chunks $tmp_status_validator)
