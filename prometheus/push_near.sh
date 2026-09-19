@@ -66,12 +66,21 @@ near_chunks_expected=$(jq .num_expected_chunks $tmp_status_validator)
 near_validator_account_total_balance=$(near view $VALIDATOR_NAME get_total_staked_balance "{}" | grep -v 'View call'  | sed "s/'//g")
 near_validator_stake_total_balance=$(near view $VALIDATOR_NAME get_account_total_balance "{\"account_id\": \"${POOL_ID}.near\"}" | grep -v 'View call'  | sed "s/'//g")
 near_validator_stake_delegators_count=$(/usr/local/bin/staking_contract/getAccounts.sh| grep account_id | wc -l)
-
+near_seat_price=$(grep 'seat price' $tmp_status  |   grep 'seat price:' | sed -r 's/.*seat price: ([0-9]+),([0-9]+).*/\1\2/g')
+near_p2pstaking_near_staked=$(/usr/local/bin/near view \
+  p2pstaking.poolv1.near get_account \
+  '{"account_id":"p2pstaking.near"}' \
+  --networkId mainnet \
+| sed -n '/^{/,/^}/p' \
+| sed -E "s/^([[:space:]]*)([[:alnum:]_]+):/\1\"\2\":/; s/'/\"/g" \
+| jq -r  .staked_balance )
 URL=$PUSHGATEWAY_URL/metrics/job/near/instance/$VALIDATOR_NAME
 
 cat <<EOF >> $tmp_metrics
 # TYPE near_seat_price gauge
-near_seat_price $(grep 'seat price' $tmp_status  |   grep 'seat price:' | sed -r 's/.*seat price: ([0-9]+),([0-9]+).*/\1\2/g')
+near_seat_price ${near_seat_price:-0}
+# TYPE near_p2pstaking_near_staked gauge
+near_p2pstaking_near_staked ${near_p2pstaking_near_staked:-0}
 # TYPE near_stake gauge
 near_stake ${near_stake:-0}
 # TYPE near_uptime gauge
@@ -110,4 +119,3 @@ cat $tmp_metrics  |  curl --insecure -s --data-binary @-  $URL
 # TODO : remove once migration done (backward compatibility push to host pgw instance)
 curl   localhost:9091 2>&1 | grep -q 'Connection refused' || \
 cat $tmp_metrics  |  curl --insecure -s --data-binary @-  https://127.0.0.1:9091/metrics/job/near/instance/$VALIDATOR_NAME
-
