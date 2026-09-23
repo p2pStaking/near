@@ -64,8 +64,9 @@ curl -s -d '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params
 jq ".result.current_validators[] | select(.account_id == \"$VALIDATOR_NAME\")" $tmp_validators > $tmp_status_validator
 
 # présent dans le set du prochain epoch, et pas dans la liste des kick-out
-near_validator_next=$(jq "[.result.next_validators[].account_id] | index(\"$VALIDATOR_NAME\") != null" $tmp_validators | grep -q true && echo 1 || echo 0)
-jq -e ".result.prev_epoch_kickout[]? | select(.account_id == \"$VALIDATOR_NAME\")" $tmp_validators > /dev/null && near_validator_next=0
+near_validator_next=0
+jq "[.result.next_validators[].account_id] " $tmp_validators | grep -q $VALIDATOR_NAME && near_validator_next=1
+jq -e ".result.prev_epoch_kickout[]? " $tmp_validators | grep -q $VALIDATOR_NAME && near_validator_next=0
 
 # stake en NEAR entiers (yoctoNEAR -> on tronque 24 chiffres)
 near_stake=$(jq -r '.stake[:-24] // "0"' $tmp_status_validator)
