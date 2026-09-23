@@ -1,40 +1,27 @@
-ARG NEAR_RELEASE_VERSION=1.40.0
+ARG NEAR_RELEASE_VERSION=2.13.4
 
-FROM  node:22.5-bullseye as near-cli
+FROM node:22-bookworm AS near-cli
 RUN apt-get update && \
-        apt-get upgrade -y && \
-        apt-get install -y curl && \
-        cd ~ && \
-        PATH="$PATH" && \
-        npm install -g near-cli
+    apt-get install -y --no-install-recommends curl jq ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
+    npm install -g near-cli
 CMD ["sh", "-c", "$@"]
 
-
-FROM near-cli AS build 
+FROM near-cli AS build
 ARG NEAR_RELEASE_VERSION
-RUN cd && \
-	echo "building neard version $NEAR_RELEASE_VERSION" && sleep 3s  && \
-	apt-get update && \
-	apt-get upgrade -y && \
-	apt-get install -y python3 git jq && \
-	apt-get install -y clang build-essential make && \
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-	. $HOME/.cargo/env && \
-	git clone https://github.com/near/nearcore.git && \
-	cd nearcore && \
-	git checkout $NEAR_RELEASE_VERSION && \
- 	rustup toolchain install 1.84.0-x86_64-unknown-linux-gnu && \
-	make release  
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends python3 git clang build-essential make pkg-config libssl-dev && \
+    rm -rf /var/lib/apt/lists/*
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain none
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN cd /root && \
+    git clone --depth 1 --branch $NEAR_RELEASE_VERSION https://github.com/near/nearcore.git && \
+    cd nearcore && \
+    make release
 
-FROM p2pstaking/near-cli as final
+FROM near-cli AS final
 COPY --from=build /root/nearcore/target/release/neard /usr/local/bin/
-RUN	apt-get update && \
-        apt-get upgrade -y && \
-        apt-get install -y jq && \
-	mkdir -p ~/.near && \
-	cd ~/.near 
-EXPOSE  3030 24567
-COPY initialize_near.sh /root/
-COPY run_near.sh /root/
-COPY get_snapshot.sh /root/ 
-CMD /root/run_near.sh 
+RUN mkdir -p /root/.near
+EXPOSE 3030 24567
+COPY initialize_near.sh run_near.sh get_snapshot.sh /root/
+CMD ["/root/run_near.sh"]
