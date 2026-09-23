@@ -48,6 +48,10 @@ tmp_metrics=$(mktemp)
 trap "rm $tmp_metrics" EXIT
 
 near_validator_next=1
+
+
+
+#TODO supp 
 grep -q $VALIDATOR_NAME $tmp_status_next  || near_validator_next=0
 grep $VALIDATOR_NAME $tmp_status_next | grep -q 'Kicked out' && near_validator_next=0
 
@@ -63,10 +67,45 @@ near_blocks_produced=$(jq .num_produced_blocks $tmp_status_validator)
 near_blocks_expected=$(jq .num_expected_blocks $tmp_status_validator)
 near_chunks_produced=$(jq .num_produced_chunks $tmp_status_validator)
 near_chunks_expected=$(jq .num_expected_chunks $tmp_status_validator)
+
+# TODO fin supp 
+
+tmp_validators=$(mktemp)
+tmp_status_validator=$(mktemp)
+tmp_metrics=$(mktemp)
+trap "rm -f $tmp_validators $tmp_status_validator $tmp_metrics" EXIT
+
+curl -s -d '{"jsonrpc": "2.0", "method": "validators", "id": "dontcare", "params": [null]}' \
+        -H 'Content-Type: application/json' \
+        http://localhost:$NEAR_METRIC_PORT > $tmp_validators
+
+jq ".result.current_validators[] | select(.account_id == \"$VALIDATOR_NAME\")" $tmp_validators > $tmp_status_validator
+
+# présent dans le set du prochain epoch, et pas dans la liste des kick-out
+near_validator_next=$(jq "[.result.next_validators[].account_id] | index(\"$VALIDATOR_NAME\") != null" $tmp_validators | grep -q true && echo 1 || echo 0)
+jq -e ".result.prev_epoch_kickout[]? | select(.account_id == \"$VALIDATOR_NAME\")" $tmp_validators > /dev/null && near_validator_next=0
+
+# stake en NEAR entiers (yoctoNEAR -> on tronque 24 chiffres)
+near_stake=$(jq -r '.stake[:-24] // "0"' $tmp_status_validator)
+
+near_blocks_produced=$(jq .num_produced_blocks $tmp_status_validator)
+near_blocks_expected=$(jq .num_expected_blocks $tmp_status_validator)
+near_chunks_produced=$(jq .num_produced_chunks $tmp_status_validator)
+near_chunks_expected=$(jq .num_expected_chunks $tmp_status_validator)
+near_endorsements_produced=$(jq .num_produced_endorsements $tmp_status_validator)
+near_endorsements_expected=$(jq .num_expected_endorsements $tmp_status_validator)
+
+# uptime : ratio global produits / attendus, 100 si rien d'attendu (début d'epoch)
+near_uptime=$(jq -r '
+  (.num_expected_blocks + .num_expected_chunks + .num_expected_endorsements) as $exp
+  | if $exp == 0 then 100
+    else ((.num_produced_blocks + .num_produced_chunks + .num_produced_endorsements) / $exp * 10000 | floor) / 100
+    end' $tmp_status_validator)
+
 near_validator_account_total_balance=$(near view $VALIDATOR_NAME get_total_staked_balance "{}" | grep -v 'View call'  | sed "s/'//g")
 near_validator_stake_total_balance=$(near view $VALIDATOR_NAME get_account_total_balance "{\"account_id\": \"${POOL_ID}.near\"}" | grep -v 'View call'  | sed "s/'//g")
 near_validator_stake_delegators_count=$(/usr/local/bin/staking_contract/getAccounts.sh| grep account_id | wc -l)
-near_seat_price=$(grep 'seat price' $tmp_status  |   grep 'seat price:' | sed -r 's/.*seat price: ([0-9]+),([0-9]+).*/\1\2/g')
+near_seat_price=$(jq -r '[.result.current_validators[].stake | .[:-24] | tonumber] | min' $tmp_validators)
 near_p2pstaking_near_staked=$(/usr/local/bin/near view \
   p2pstaking.poolv1.near get_account \
   '{"account_id":"p2pstaking.near"}' \
